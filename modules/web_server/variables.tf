@@ -25,11 +25,17 @@ variable "vpc_id" {
 }
 
 variable "subnet_id" {
-  description = "Subnet ID"
+  description = "Subnet ID where the EC2 instance will be deployed"
   type        = string
 }
 
 variable "html_content" {
   description = "HTML page content"
   type        = string
+}
+
+variable "allowed_ssh_cidrs" {
+  description = "List of CIDR blocks allowed to SSH into the instance"
+  type        = list(string)
+  default     = []
 }

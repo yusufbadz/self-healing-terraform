@@ -1,5 +1,4 @@
-
-#Security Group
+# Security Group
 resource "aws_security_group" "web_sg" {
   name        = "web-sg-${var.environment}"
   description = "Web security group"
@@ -25,7 +24,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.allowed_ssh_cidrs
     description = "SSH"
   }
 
@@ -44,34 +43,30 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
-
-#EC2 Instance
+# EC2 Instance
 resource "aws_instance" "web_server" {
   ami           = var.ami_id
   instance_type = var.instance_type
-
-  subnet_id = var.subnet_id
+  subnet_id     = var.subnet_id
 
   vpc_security_group_ids = [
     aws_security_group.web_sg.id
   ]
 
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
-
   user_data = <<-EOF
-#!/bin/bash
+    #!/bin/bash
+    yum update -y
+    yum install -y httpd
 
-yum update -y
-yum install -y httpd
+    systemctl start httpd
+    systemctl enable httpd
 
-systemctl start httpd
-systemctl enable httpd
+    cat > /var/www/html/index.html <<'HTMLEOF'
+    ${var.html_content}
+    HTMLEOF
+  EOF
 
-cat > /var/www/html/index.html << 'HTMLEOF'
-${var.html_content}
-HTMLEOF
-
-EOF
+  user_data_replace_on_change = true
 
   tags = {
     Name        = "web-server-${var.environment}"
@@ -80,6 +75,4 @@ EOF
     ManagedBy   = "Terraform"
   }
 }
-
-
 
