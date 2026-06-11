@@ -5,6 +5,6 @@ locals {
     Owner       = var.owner
     ManagedBy   = "Terraform"
     CostCenter  = "CS-PROJECT-2024"
-    Repository  = "github.com/YourOrg/self-healing-terraform"
+    Repository  = "github.com/yusufbadz/self-healing-terraform"
   }
 }
