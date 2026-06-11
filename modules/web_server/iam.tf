@@ -36,3 +36,21 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   name = "web-server-profile-${var.environment}"
   role = aws_iam_role.ec2_role.name
 }
+
+resource "aws_iam_role_policy" "s3_read_website_html" {
+  name = "web-server-s3-read-website-html-${var.environment}"
+  role = aws_iam_role.ec2_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject"
+        ]
+        Resource = "arn:aws:s3:::self-healing-tf-state/website/index.html"
+      }
+    ]
+  })
+}
