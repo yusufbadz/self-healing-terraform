@@ -13,7 +13,7 @@ variable "owner" {
 variable "instance_type" {
   description = "EC2 instance type for the web server"
   type        = string
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 variable "allowed_ssh_cidrs" {
