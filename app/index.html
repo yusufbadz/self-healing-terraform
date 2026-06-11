@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABSA — Cloud Infrastructure Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Nunito+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ABSA official brand red */
+  --red:           #DD0033;
+  --red-dark:      #B5002A;
+  --red-darker:    #8C0020;
+  --red-light:     #FFF0F3;
+  --red-mid:       #FFD6DE;
+  --red-border:    #FFAABB;
+
+  /* Neutrals */
+  --white:         #FFFFFF;
+  --bg:            #F5F4F2;
+  --bg-warm:       #EFEDE9;
+  --panel:         #FFFFFF;
+  --border:        #E2DDD8;
+  --border-light:  #EDE9E4;
+  --divider:       #D8D3CC;
+
+  /* Text */
+  --text-1:        #1A1410;
+  --text-2:        #5C5650;
+  --text-3:        #9C9690;
+  --text-red:      #DD0033;
+
+  /* Status */
+  --green:         #007A3D;
+  --green-bg:      #EBF6F0;
+  --green-border:  #9ED5B8;
+
+  --amber:         #B45309;
+  --amber-bg:      #FEF6E7;
+  --amber-border:  #F0D49A;
+
+  --blue:          #1D5FA8;
+  --blue-bg:       #EBF2FB;
+  --blue-border:   #A8C4E8;
+
+  /* Fonts */
+  --font-brand:   'Nunito', sans-serif;
+  --font-body:    'Nunito Sans', sans-serif;
+  --font-mono:    'IBM Plex Mono', monospace;
+
+  --radius:        6px;
+  --radius-lg:     10px;
+  --radius-pill:   100px;
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:     0 3px 10px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-card:   0 0 0 1px var(--border), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─────────────────────────────────────────────────
+   COOKIE BAR
+───────────────────────────────────────────────── */
+.cookie-bar {
+  background: var(--red-light);
+  border-bottom: 1px solid var(--red-border);
+  padding: 9px 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-2);
+  font-family: var(--font-body);
+}
+.cookie-bar svg { color: var(--red); flex-shrink: 0; }
+.cookie-bar a { color: var(--red); font-weight: 600; text-decoration: none; }
+.cookie-bar a:hover { text-decoration: underline; }
+.cookie-sep { color: var(--text-3); margin: 0 2px; }
+
+/* ─────────────────────────────────────────────────
+   TOP NAV
+───────────────────────────────────────────────── */
+.topnav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: var(--shadow-sm);
+}
+
+.topnav-left { display: flex; align-items: center; }
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  text-decoration: none;
+  margin-right: 32px;
+  flex-shrink: 0;
+}
+
+/* Faithful recreation of ABSA's logo mark */
+.logo-svg-wrap {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.logo-portal-tag {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-left: 14px;
+  border-left: 1px solid var(--border);
+  margin-left: 4px;
+}
+
+.logo-portal-name {
+  font-family: var(--font-brand);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.logo-portal-sub {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.topnav-nav { display: flex; align-items: center; }
+
+.topnav-link {
+  padding: 0 16px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  font-family: var(--font-brand);
+}
+.topnav-link:hover { color: var(--text-1); }
+.topnav-link.active { color: var(--red); border-bottom-color: var(--red); }
+
+.topnav-right { display: flex; align-items: center; gap: 14px; }
+
+.internal-tag {
+  background: var(--red-light);
+  border: 1px solid var(--red-border);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-family: var(--font-body);
+}
+
+.nav-action {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  transition: all 0.15s;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.nav-action:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+
+.nav-action.primary {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+  font-weight: 600;
+}
+.nav-action.primary:hover { background: var(--red-dark); border-color: var(--red-dark); color: var(--white); }
+
+/* ─────────────────────────────────────────────────
+   SUB NAV
+───────────────────────────────────────────────── */
+.subnav {
+  background: var(--red);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+
+.subnav-links { display: flex; align-items: center; }
+
+.subnav-link {
+  padding: 0 18px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.80);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+  font-family: var(--font-brand);
+  border-bottom: 3px solid transparent;
+}
+.subnav-link:hover { color: white; background: rgba(0,0,0,0.12); }
+.subnav-link.active { color: white; border-bottom-color: white; background: rgba(0,0,0,0.10); }
+
+.subnav-help {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+  font-family: var(--font-brand);
+}
+.subnav-help:hover { background: rgba(255,255,255,0.25); }
+
+/* ─────────────────────────────────────────────────
+   ENV BAR
+───────────────────────────────────────────────── */
+.envbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 9px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+  font-family: var(--font-body);
+}
+.breadcrumb a { color: var(--red); text-decoration: none; font-weight: 600; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb .sep { color: var(--text-3); }
+.breadcrumb .cur { color: var(--text-1); font-weight: 600; }
+
+.env-chips { display: flex; align-items: center; gap: 8px; }
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3px 9px;
+  font-size: 11px;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  animation: heartbeat 2.4s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(0.6); opacity: 0.5; }
+}
+
+/* ─────────────────────────────────────────────────
+   MAIN
+───────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  padding: 32px;
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ─────────────────────────────────────────────────
+   PAGE HEADER
+───────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.page-header-left { display: flex; flex-direction: column; gap: 5px; }
+
+.page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--font-body);
+}
+
+.page-eyebrow .dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+.page-title {
+  font-family: var(--font-brand);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.page-sub {
+  font-size: 13px;
+  color: var(--text-3);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.status-global {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green-bg);
+  border: 1.5px solid var(--green-border);
+  border-radius: var(--radius-lg);
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+  font-family: var(--font-brand);
+}
+
+/* ─────────────────────────────────────────────────
+   STATS ROW
+───────────────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 22px 18px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  animation: rise 0.4s ease both;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--red);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.stat-card:hover { box-shadow: var(--shadow-md); border-color: #CCC7C0; transform: translateY(-2px); }
+
+.stat-card:nth-child(1) { animation-delay: 0.04s; }
+.stat-card:nth-child(2) { animation-delay: 0.08s; }
+.stat-card:nth-child(3) { animation-delay: 0.12s; }
+.stat-card:nth-child(4) { animation-delay: 0.16s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.stat-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-family: var(--font-body);
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-value.green  { color: var(--green); }
+.stat-value.mono-sm { font-size: 13px; letter-spacing: 0; line-height: 1.6; }
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 500;
+  font-family: var(--font-body);
+}
+
+/* ─────────────────────────────────────────────────
+   DIVIDER LABEL
+───────────────────────────────────────────────── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: var(--text-2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  font-family: var(--font-brand);
+}
+
+.section-divider .bar {
+  width: 4px;
+  height: 16px;
+  background: var(--red);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ─────────────────────────────────────────────────
+   SERVICE CARDS
+───────────────────────────────────────────────── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.svc-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  animation: rise 0.4s ease both;
+}
+
+.svc-card:hover { box-shadow: var(--shadow-md); border-color: #CCC7C0; transform: translateY(-2px); }
+
+.svc-card:nth-child(1) { animation-delay: 0.16s; }
+.svc-card:nth-child(2) { animation-delay: 0.20s; }
+.svc-card:nth-child(3) { animation-delay: 0.24s; }
+.svc-card:nth-child(4) { animation-delay: 0.28s; }
+.svc-card:nth-child(5) { animation-delay: 0.32s; }
+.svc-card:nth-child(6) { animation-delay: 0.36s; }
+
+.svc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 10px;
+}
+
+.svc-name {
+  font-family: var(--font-brand);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+
+.svc-id {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.03em;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: var(--font-body);
+}
+
+.status-pill.ok {
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+}
+
+.status-pill.ok::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: heartbeat 2.4s ease-in-out infinite;
+}
+
+.svc-rule { height: 1px; background: var(--border-light); margin-bottom: 16px; }
+
+.svc-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.metric-box {
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.metric-lbl {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-family: var(--font-body);
+}
+
+.metric-val {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.metric-val.green { color: var(--green); }
+
+/* ─────────────────────────────────────────────────
+   BOTTOM PANELS
+───────────────────────────────────────────────── */
+.panels-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  animation: rise 0.4s ease 0.4s both;
+}
+
+.panel-head {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 13px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-head-bar {
+  width: 3px;
+  height: 14px;
+  background: var(--red);
+  border-radius: 2px;
+}
+
+.panel-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-1);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-family: var(--font-brand);
+}
+
+.panel-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+}
+.panel-meta.green { color: var(--green); font-weight: 600; }
+
+/* Audit log */
+.log-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--border-light);
+  transition: background 0.1s;
+}
+.log-row:last-child { border-bottom: none; }
+.log-row:hover { background: var(--bg); }
+
+.log-time {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  white-space: nowrap;
+  padding-top: 3px;
+  min-width: 56px;
+}
+
+.log-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.log-icon.g { background: var(--green-bg); }
+.log-icon.g svg { color: var(--green); }
+.log-icon.b { background: var(--blue-bg); }
+.log-icon.b svg { color: var(--blue); }
+.log-icon.y { background: var(--amber-bg); }
+.log-icon.y svg { color: var(--amber); }
+
+.log-body { flex: 1; min-width: 0; }
+
+.log-action {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 2px;
+  font-family: var(--font-body);
+}
+
+.log-detail {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Infra table */
+.infra-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 20px;
+  border-bottom: 1px solid var(--border-light);
+  gap: 16px;
+  transition: background 0.1s;
+}
+.infra-row:last-child { border-bottom: none; }
+.infra-row:hover { background: var(--bg); }
+
+.infra-key {
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 500;
+  white-space: nowrap;
+  font-family: var(--font-body);
+}
+
+.infra-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-1);
+  text-align: right;
+  font-weight: 500;
+}
+.infra-val.green { color: var(--green); font-weight: 700; }
+.infra-val.muted { color: var(--text-2); }
+
+/* ─────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────── */
+.footer {
+  background: #1A1410;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-item {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.35);
+}
+.footer-item span { color: rgba(255,255,255,0.65); }
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tf-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(92,78,229,0.2);
+  border: 1px solid rgba(92,78,229,0.35);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #A89EF8;
+  font-family: var(--font-body);
+  letter-spacing: 0.03em;
+}
+
+.footer-text {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.35);
+  font-family: var(--font-body);
+}
+</style>
+</head>
+<body>
+
+<!-- COOKIE BAR -->
+<div class="cookie-bar">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.8" fill="currentColor"/></svg>
+  We use cookies to optimise the user experience on this portal.
+  <a href="#">Tell me more</a>
+  <span class="cookie-sep">·</span>
+  <a href="#">Dismiss</a>
+</div>
+
+<!-- TOP NAV -->
+<header class="topnav">
+  <div class="topnav-left">
+    <a class="logo-wrap" href="#">
+      <!-- Official ABSA logo from CDN -->
+      <div class="logo-svg-wrap">
+        <img
+          src="https://www.absa.co.za/content/dam/south-africa/absa/Iconography/absa-logo-red-bg.png"
+          alt="ABSA"
+          width="48"
+          height="48"
+          style="border-radius:50%;display:block;"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <!-- Fallback SVG if image fails -->
+        <div style="display:none;width:48px;height:48px;background:#DD0033;border-radius:50%;align-items:center;justify-content:center;">
+          <svg width="30" height="20" viewBox="0 0 60 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="19" font-family="Nunito,sans-serif" font-weight="800" font-size="20" letter-spacing="-0.5" fill="white">absa</text>
+          </svg>
+        </div>
+      </div>
+      <div class="logo-portal-tag">
+        <div class="logo-portal-name">Cloud Infrastructure</div>
+        <div class="logo-portal-sub">Internal Portal · Dev</div>
+      </div>
+    </a>
+
+    <nav class="topnav-nav">
+      <a class="topnav-link active" href="#">Infrastructure</a>
+      <a class="topnav-link" href="#">Security</a>
+      <a class="topnav-link" href="#">CI/CD</a>
+      <a class="topnav-link" href="#">State Management</a>
+    </nav>
+  </div>
+
+  <div class="topnav-right">
+    <div class="internal-tag">Internal Use Only</div>
+    <a class="nav-action" href="#">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search
+    </a>
+    <a class="nav-action primary" href="#">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Log in
+    </a>
+  </div>
+</header>
+
+<!-- SUB NAV -->
+<nav class="subnav">
+  <div class="subnav-links">
+    <a class="subnav-link active" href="#">Service Status</a>
+    <a class="subnav-link" href="#">Compute</a>
+    <a class="subnav-link" href="#">Networking</a>
+    <a class="subnav-link" href="#">Storage</a>
+    <a class="subnav-link" href="#">IAM &amp; Governance</a>
+    <a class="subnav-link" href="#">Audit Logs</a>
+    <a class="subnav-link" href="#">Alerts</a>
+  </div>
+  <a class="subnav-help" href="#">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.8" fill="currentColor"/></svg>
+    Get help
+  </a>
+</nav>
+
+<!-- ENV BAR -->
+<div class="envbar">
+  <div class="breadcrumb">
+    <a href="#">Portal</a>
+    <span class="sep">›</span>
+    <a href="#">Infrastructure</a>
+    <span class="sep">›</span>
+    <span class="cur">Service Status</span>
+  </div>
+  <div class="env-chips">
+    <div class="chip"><span class="live-dot"></span>live</div>
+    <div class="chip">AWS us-east-1</div>
+    <div class="chip">workspace: dev</div>
+    <div class="chip">Terraform v1.7.0</div>
+    <div class="chip">Last sync: 2026-06-09 18:21 UTC</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="page-eyebrow">
+        Infrastructure <span class="dot"></span> Dev Environment <span class="dot"></span> Real-time
+      </div>
+      <h1 class="page-title">Service Status Overview</h1>
+      <p class="page-sub">All ABSA cloud-managed services &nbsp;·&nbsp; Managed by Terraform &nbsp;·&nbsp; environment: dev</p>
+    </div>
+    <div class="status-global">
+      <span class="live-dot"></span>
+      All Systems Operational
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Services Online</div>
+      <div class="stat-value green">6 / 6</div>
+      <div class="stat-sub">100% operational</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">EC2 Instance</div>
+      <div class="stat-value mono-sm">i-0a3f7c912bde456f</div>
+      <div class="stat-sub">t2.micro &nbsp;·&nbsp; running</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Platform Uptime</div>
+      <div class="stat-value">99.97<span style="font-size:15px;font-weight:500;color:var(--text-3);">%</span></div>
+      <div class="stat-sub">last 30 days</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Open Incidents</div>
+      <div class="stat-value green">0</div>
+      <div class="stat-sub">no active alerts</div>
+    </div>
+  </div>
+
+  <!-- Services grid -->
+  <div class="section-divider"><div class="bar"></div>Core Banking Services</div>
+  <div class="services-grid">
+
+    <div class="svc-card">
+      <div class="svc-head">
+        <div>
+          <div class="svc-name">Core Banking System</div>
+          <div class="svc-id">svc-cbs-001 · port 8443</div>
+        </div>
+        <div class="status-pill ok">Operational</div>
+      </div>
+      <div class="svc-rule"></div>
+      <div class="svc-metrics">
+        <div class="metric-box">
+          <div class="metric-lbl">Response</div>
+          <div class="metric-val green">42ms</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Uptime</div>
+          <div class="metric-val">99.99%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-head">
+        <div>
+          <div class="svc-name">Payment Gateway</div>
+          <div class="svc-id">svc-pgw-002 · port 443</div>
+        </div>
+        <div class="status-pill ok">Operational</div>
+      </div>
+      <div class="svc-rule"></div>
+      <div class="svc-metrics">
+        <div class="metric-box">
+          <div class="metric-lbl">Response</div>
+          <div class="metric-val green">67ms</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Uptime</div>
+          <div class="metric-val">99.97%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-head">
+        <div>
+          <div class="svc-name">Authentication Service</div>
+          <div class="svc-id">svc-auth-003 · port 8080</div>
+        </div>
+        <div class="status-pill ok">Operational</div>
+      </div>
+      <div class="svc-rule"></div>
+      <div class="svc-metrics">
+        <div class="metric-box">
+          <div class="metric-lbl">Response</div>
+          <div class="metric-val green">18ms</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Uptime</div>
+          <div class="metric-val">100%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-head">
+        <div>
+          <div class="svc-name">Fraud Detection Engine</div>
+          <div class="svc-id">svc-fde-004 · port 9000</div>
+        </div>
+        <div class="status-pill ok">Operational</div>
+      </div>
+      <div class="svc-rule"></div>
+      <div class="svc-metrics">
+        <div class="metric-box">
+          <div class="metric-lbl">Response</div>
+          <div class="metric-val green">91ms</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Uptime</div>
+          <div class="metric-val">99.95%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-head">
+        <div>
+          <div class="svc-name">Customer Portal API</div>
+          <div class="svc-id">svc-api-005 · port 80</div>
+        </div>
+        <div class="status-pill ok">Operational</div>
+      </div>
+      <div class="svc-rule"></div>
+      <div class="svc-metrics">
+        <div class="metric-box">
+          <div class="metric-lbl">Response</div>
+          <div class="metric-val green">34ms</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Uptime</div>
+          <div class="metric-val">99.98%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-card">
+      <div class="svc-head">
+        <div>
+          <div class="svc-name">Notification Service</div>
+          <div class="svc-id">svc-ntf-006 · port 5672</div>
+        </div>
+        <div class="status-pill ok">Operational</div>
+      </div>
+      <div class="svc-rule"></div>
+      <div class="svc-metrics">
+        <div class="metric-box">
+          <div class="metric-lbl">Response</div>
+          <div class="metric-val green">12ms</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Uptime</div>
+          <div class="metric-val">99.96%</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom panels -->
+  <div class="section-divider"><div class="bar"></div>Infrastructure Detail</div>
+  <div class="panels-row">
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-head-left">
+          <div class="panel-head-bar"></div>
+          <div class="panel-title">Terraform Audit Log</div>
+        </div>
+        <div class="panel-meta">last 24 hours</div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-time">18:21:04</div>
+        <div class="log-icon g">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="log-body">
+          <div class="log-action">terraform apply completed</div>
+          <div class="log-detail">3 added · 0 changed · 0 destroyed</div>
+        </div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-time">18:20:51</div>
+        <div class="log-icon b">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="log-body">
+          <div class="log-action">State lock acquired</div>
+          <div class="log-detail">LockID: abc123de · user: terraform-ci</div>
+        </div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-time">18:20:48</div>
+        <div class="log-icon b">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="log-body">
+          <div class="log-action">terraform plan — no drift detected</div>
+          <div class="log-detail">State matches infrastructure · S3 backend</div>
+        </div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-time">17:44:12</div>
+        <div class="log-icon g">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="log-body">
+          <div class="log-action">CI/CD pipeline passed</div>
+          <div class="log-detail">tfsec · validate · plan · apply · all green</div>
+        </div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-time">17:43:09</div>
+        <div class="log-icon y">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><circle cx="12" cy="17" r="0.8" fill="currentColor"/></svg>
+        </div>
+        <div class="log-body">
+          <div class="log-action">tfsec warning — SGR port 22 open</div>
+          <div class="log-detail">Acknowledged · demo environment only</div>
+        </div>
+      </div>
+
+      <div class="log-row">
+        <div class="log-time">09:12:33</div>
+        <div class="log-icon g">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="log-body">
+          <div class="log-action">PR #7 merged to main</div>
+          <div class="log-detail">feat: add IAM role and instance profile</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-head-left">
+          <div class="panel-head-bar"></div>
+          <div class="panel-title">Infrastructure Details</div>
+        </div>
+        <div class="panel-meta green">● live</div>
+      </div>
+
+      <div class="infra-row"><span class="infra-key">Provider</span><span class="infra-val">AWS / hashicorp/aws ~5.0</span></div>
+      <div class="infra-row"><span class="infra-key">Region</span><span class="infra-val">us-east-1</span></div>
+      <div class="infra-row"><span class="infra-key">Workspace</span><span class="infra-val green">dev</span></div>
+      <div class="infra-row"><span class="infra-key">Instance ID</span><span class="infra-val">i-0a3f7c912bde456f</span></div>
+      <div class="infra-row"><span class="infra-key">Instance Type</span><span class="infra-val">t2.micro</span></div>
+      <div class="infra-row"><span class="infra-key">Security Group</span><span class="infra-val">sg-0c1e2f3a4b5d6e7f</span></div>
+      <div class="infra-row"><span class="infra-key">IAM Role</span><span class="infra-val">web-server-role-dev</span></div>
+      <div class="infra-row"><span class="infra-key">State Backend</span><span class="infra-val">S3 + DynamoDB lock</span></div>
+      <div class="infra-row"><span class="infra-key">State Lock</span><span class="infra-val green">Released</span></div>
+      <div class="infra-row"><span class="infra-key">Last Apply</span><span class="infra-val">2026-06-09 18:21:04 UTC</span></div>
+      <div class="infra-row"><span class="infra-key">Drift Status</span><span class="infra-val green">Clean — no drift</span></div>
+      <div class="infra-row"><span class="infra-key">Managed By</span><span class="infra-val">Terraform v1.7.0</span></div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left">
+    <div class="footer-item">Environment: <span>dev</span></div>
+    <div class="footer-item">Region: <span>AWS us-east-1</span></div>
+    <div class="footer-item">Deployed: <span>2026-06-09 18:21 UTC</span></div>
+    <div class="footer-item">Repo: <span>https://github.com/yusufbadz/self-healing-terraform.git</span></div>
+  </div>
+  <div class="footer-right">
+    <div class="tf-chip">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+      Terraform v1.7.0
+    </div>
+    <div class="footer-text">ABSA Cloud Engineering · Internal Platform</div>
+  </div>
+</footer>
+
+</body>
+</html>
