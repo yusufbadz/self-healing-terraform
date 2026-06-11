@@ -45,9 +45,10 @@ resource "aws_security_group" "web_sg" {
 
 # EC2 Instance
 resource "aws_instance" "web_server" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = var.subnet_id
+  ami                  = var.ami_id
+  instance_type        = var.instance_type
+  subnet_id            = var.subnet_id
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   vpc_security_group_ids = [
     aws_security_group.web_sg.id
